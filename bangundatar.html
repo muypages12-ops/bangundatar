@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Petualangan Bangun Datar 🌟</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pink: #FF6B9D;
+            --blue: #4ECDC4;
+            --yellow: #FFE66D;
+            --purple: #A06CD5;
+            --orange: #FF8C42;
+            --green: #95E06C;
+            --red: #FF6B6B;
+            --cyan: #45B7D1;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Floating bubbles */
+        .bubbles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: rise 10s infinite ease-in;
+        }
+
+        .bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 8s; background: var(--pink); }
+        .bubble:nth-child(2) { width: 20px; height: 20px; left: 20%; animation-duration: 5s; animation-delay: 1s; background: var(--yellow); }
+        .bubble:nth-child(3) { width: 50px; height: 50px; left: 35%; animation-duration: 7s; animation-delay: 2s; background: var(--green); }
+        .bubble:nth-child(4) { width: 80px; height: 80px; left: 50%; animation-duration: 11s; animation-delay: 0s; background: var(--blue); }
+        .bubble:nth-child(5) { width: 35px; height: 35px; left: 55%; animation-duration: 6s; animation-delay: 1s; background: var(--orange); }
+        .bubble:nth-child(6) { width: 45px; height: 45px; left: 65%; animation-duration: 8s; animation-delay: 3s; background: var(--purple); }
+        .bubble:nth-child(7) { width: 25px; height: 25px; left: 75%; animation-duration: 7s; animation-delay: 2s; background: var(--red); }
+        .bubble:nth-child(8) { width: 60px; height: 60px; left: 85%; animation-duration: 10s; animation-delay: 1s; background: var(--cyan); }
+        .bubble:nth-child(9) { width: 30px; height: 30px; left: 90%; animation-duration: 9s; animation-delay: 4s; background: var(--pink); }
+        .bubble:nth-child(10) { width: 55px; height: 55px; left: 5%; animation-duration: 12s; animation-delay: 2s; background: var(--yellow); }
+
+        @keyframes rise {
+            0% { bottom: -100px; transform: translateX(0) rotate(0deg); opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { bottom: 110vh; transform: translateX(100px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3em;
+            color: white;
+            text-shadow: 4px 4px 0px var(--pink), 6px 6px 0px rgba(0,0,0,0.1);
+            animation: bounceTitle 2s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.5em;
+            color: var(--yellow);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        .mascot {
+            font-size: 4em;
+            animation: wave 1s ease-in-out infinite alternate;
+            display: inline-block;
+        }
+
+        @keyframes bounceTitle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(-10deg); }
+            100% { transform: rotate(10deg); }
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1em;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .nav-btn:hover::after {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 0 rgba(0,0,0,0.2), 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .nav-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn.active {
+            transform: translateY(3px) scale(1.05);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+        }
+
+        .btn-materi { background: linear-gradient(135deg, var(--pink), #FF3E7F); }
+        .btn-bentuk { background: linear-gradient(135deg, var(--blue), #2AB7CA); }
+        .btn-interaktif { background: linear-gradient(135deg, var(--purple), #7B2FBE); }
+        .btn-kuis { background: linear-gradient(135deg, var(--orange), #FF6B1A); }
+        .btn-game { background: linear-gradient(135deg, var(--green), #5CBD3A); }
+
+        /* Content Area */
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            border-radius: 25px 25px 0 0;
+        }
+
+        .card-pink::before { background: linear-gradient(90deg, var(--pink), #FF3E7F); }
+        .card-blue::before { background: linear-gradient(90deg, var(--blue), #2AB7CA); }
+        .card-yellow::before { background: linear-gradient(90deg, var(--yellow), #FFD700); }
+        .card-purple::before { background: linear-gradient(90deg, var(--purple), #7B2FBE); }
+        .card-orange::before { background: linear-gradient(90deg, var(--orange), #FF6B1A); }
+        .card-green::before { background: linear-gradient(90deg, var(--green), #5CBD3A); }
+
+        .card h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3em;
+            margin: 15px 0 10px 0;
+            color: #555;
+        }
+
+        .card p, .card li {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .card ul {
+            padding-left: 25px;
+        }
+
+        .card ul li {
+            margin-bottom: 8px;
+        }
+
+        .emoji-bullet {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .emoji-bullet li::before {
+            content: none;
+        }
+
+        /* SVG Shape Display */
+        .shape-display {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .shape-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            width: 280px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .shape-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-color: var(--pink);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .shape-card svg {
+            width: 160px;
+            height: 160px;
+            margin-bottom: 15px;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.1));
+        }
+
+        .shape-card h4 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .shape-card p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .shape-info-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 5px solid var(--orange);
+            display: none;
+        }
+
+        .shape-info-box.show {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        /* Unsur Visual */
+        .unsur-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .unsur-item {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 3px dashed;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .unsur-item:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .unsur-item.titik { border-color: var(--red); }
+        .unsur-item.garis { border-color: var(--blue); }
+        .unsur-item.sudut { border-color: var(--green); }
+        .unsur-item.sisi { border-color: var(--purple); }
+
+        .unsur-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .unsur-item h4 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        /* Interactive Canvas */
+        .canvas-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .interactive-svg {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            background: #fafafa;
+            cursor: crosshair;
+        }
+
+        /* Shape selector for interactive */
+        .shape-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .shape-select-btn {
+            padding: 12px 24px;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            background: white;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .shape-select-btn:hover, .shape-select-btn.selected {
+            border-color: var(--pink);
+            background: #fff0f5;
+            transform: scale(1.05);
+        }
+
+        /* Interactive Exploration */
+        .explore-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .explore-svg-wrap {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .explore-info {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .highlight-btn {
+            padding: 12px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            font-size: 1em;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .highlight-btn:hover {
+            transform: scale(1.08);
+        }
+
+        .btn-titik-sudut { background: var(--red); }
+        .btn-sisi { background: var(--blue); }
+        .btn-sudut { background: var(--green); }
+        .btn-diagonal { background: var(--purple); }
+        .btn-reset-highlight { background: #999; }
+
+        /* Quiz Styles */
+        .quiz-container {
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .quiz-question.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .quiz-question h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .quiz-option {
+            padding: 15px 20px;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            background: white;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--blue);
+            background: #f0f9ff;
+            transform: scale(1.03);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--green);
+            background: #d4edda;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .quiz-option.wrong {
+            border-color: var(--red);
+            background: #f8d7da;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1em;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .feedback-correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .feedback-wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .quiz-nav-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1em;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-nav-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .quiz-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-prev { background: var(--cyan); }
+        .btn-next { background: var(--pink); }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.active { background: var(--pink); transform: scale(1.3); }
+        .progress-dot.answered-correct { background: var(--green); }
+        .progress-dot.answered-wrong { background: var(--red); }
+
+        .score-display {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+
+        .score-display.show {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .score-number {
+            font-family: 'Fredoka One', cursive;
+            font-size: 5em;
+            color: var(--pink);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .score-stars {
+            font-size: 3em;
+            margin: 15px 0;
+        }
+
+        .score-message {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 1.8em;
+            color: #555;
+        }
+
+        /* Drag & Drop Game */
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .drag-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            min-height: 80px;
+        }
+
+        .drag-item {
+            padding: 12px 22px;
+            background: linear-gradient(135deg, var(--yellow), #FFD700);
+            border-radius: 12px;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            font-size: 1.05em;
+            cursor: grab;
+            transition: all 0.3s ease;
+            user-select: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .drag-item:hover {
+            transform: scale(1.08);
+        }
+
+        .drag-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .drop-zones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .drop-zone {
+            background: white;
+            border: 3px dashed #ccc;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--green);
+            background: #f0fff0;
+            transform: scale(1.03);
+        }
+
+        .drop-zone h4 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .drop-zone .dropped-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dropped-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .dropped-item.correct-drop {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .dropped-item.wrong-drop {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .game-score {
+            text-align: center;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5em;
+            color: var(--purple);
+            margin: 15px 0;
+        }
+
+        .game-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1em;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .game-btn:hover { transform: scale(1.08); }
+        .game-btn.check-btn { background: linear-gradient(135deg, var(--green), #5CBD3A); }
+        .game-btn.reset-btn { background: linear-gradient(135deg, var(--red), #FF3E3E); }
+
+        /* Counting Game */
+        .counting-game {
+            text-align: center;
+        }
+
+        .counting-shape-display {
+            margin: 20px auto;
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+        }
+
+        .counting-shape-display svg {
+            width: 300px;
+            height: 300px;
+        }
+
+        .counting-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .counting-input-group {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .counting-input-group label {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .counting-input-group input {
+            width: 80px;
+            padding: 10px;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.3em;
+            text-align: center;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+        }
+
+        .counting-input-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .counting-input-group input.input-correct {
+            border-color: var(--green);
+            background: #d4edda;
+        }
+
+        .counting-input-group input.input-wrong {
+            border-color: var(--red);
+            background: #f8d7da;
+        }
+
+        /* Info Box / Tooltip */
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid var(--green);
+        }
+
+        .info-box.tip {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left-color: var(--orange);
+        }
+
+        .info-box.warning {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            border-left-color: var(--pink);
+        }
+
+        .info-box h4 {
+            font-family: 'Fredoka One', cursive;
+            margin-bottom: 8px;
+        }
+
+        /* Table */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .styled-table thead {
+            background: linear-gradient(135deg, var(--blue), #2AB7CA);
+            color: white;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 14px 18px;
+            text-align: center;
+            font-size: 1.05em;
+        }
+
+        .styled-table th {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 2px solid #eee;
+            transition: background 0.3s ease;
+        }
+
+        .styled-table tbody tr:hover {
+            background: #f0f9ff;
+        }
+
+        .styled-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        /* Stars animation */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+        }
+
+        .star-particle {
+            position: absolute;
+            font-size: 2em;
+            animation: starFall 1.5s ease-out forwards;
+        }
+
+        @keyframes starFall {
+            0% { transform: translateY(-20px) rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg) scale(0); opacity: 0; }
+        }
+
+        /* Confetti */
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(1080deg); opacity: 0; }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2em; }
+            .header .subtitle { font-size: 1.2em; }
+            .nav-btn { padding: 12px 20px; font-size: 0.95em; }
+            .card { padding: 20px; }
+            .card h2 { font-size: 1.4em; }
+            .quiz-options { grid-template-columns: 1fr; }
+            .shape-card { width: 100%; }
+            .explore-container { flex-direction: column; }
+        }
+
+        /* Animations for elements on hover */
+        .animate-on-hover {
+            transition: all 0.3s ease;
+        }
+        .animate-on-hover:hover {
+            transform: scale(1.02);
+        }
+
+        /* Tooltip */
+        .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            border-bottom: 2px dotted var(--blue);
+        }
+
+        .tooltip-wrapper .tooltip-text {
+            visibility: hidden;
+            background: #333;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            padding: 8px 14px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-wrapper:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Shape label badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-sisi { background: var(--blue); }
+        .badge-sudut { background: var(--green); }
+        .badge-titik { background: var(--red); }
+        .badge-diagonal { background: var(--purple); }
+
+        /* Pop up modal for shape details */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeInUp 0.3s ease;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.8em;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #999;
+        }
+        .modal-close:hover { color: var(--red); }
+
+        /* Shape animation in interactive */
+        .shape-highlight-sisi {
+            stroke: var(--blue) !important;
+            stroke-width: 5 !important;
+            animation: pulseStroke 1s ease infinite;
+        }
+        .shape-highlight-sudut {
+            fill: var(--green) !important;
+            animation: pulseFill 1s ease infinite;
+        }
+        .shape-highlight-titik {
+            fill: var(--red) !important;
+            animation: pulseFill 1s ease infinite;
+        }
+        .shape-highlight-diagonal {
+            stroke: var(--purple) !important;
+            stroke-width: 3 !important;
+            stroke-dasharray: 8 4;
+            animation: pulseStroke 1s ease infinite;
+        }
+
+        @keyframes pulseStroke {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes pulseFill {
+            0%, 100% { opacity: 1; r: 8; }
+            50% { opacity: 0.6; r: 12; }
+        }
+
+        /* Smooth scroll behavior */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Bubbles Background -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- Stars Container for Celebration -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="mascot">🦊</div>
+        <h1>Petualangan Bangun Datar</h1>
+        <p class="subtitle">✨ Ayo Belajar Unsur-Unsur Bangun Datar! ✨</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <button class="nav-btn btn-materi active" onclick="showSection('materi')">📚 Materi</button>
+        <button class="nav-btn btn-bentuk" onclick="showSection('bentuk')">🔷 Bangun Datar</button>
+        <button class="nav-btn btn-interaktif" onclick="showSection('interaktif')">🔍 Eksplorasi</button>
+        <button class="nav-btn btn-kuis" onclick="showSection('kuis')">📝 Kuis</button>
+        <button class="nav-btn btn-game" onclick="showSection('game')">🎮 Game</button>
+    </nav>
+
+    <div class="content">
+        <!-- ==================== SECTION: MATERI ==================== -->
+        <div class="section active" id="section-materi">
+            <!-- Intro Card -->
+            <div class="card card-pink animate-on-hover">
+                <h2>🌟 Apa itu Bangun Datar?</h2>
+                <p>
+                    Bangun datar adalah <strong>bentuk yang rata</strong> (tidak memiliki ketebalan/volume) dan hanya memiliki <strong>panjang</strong> dan <strong>lebar</strong>. Bangun datar hidup di dunia 2 dimensi! 🌍
+                </p>
+                <div class="info-box tip">
+                    <h4>💡 Tahukah Kamu?</h4>
+                    <p>Contoh bangun datar ada di mana-mana! Layar HP 📱 berbentuk persegi panjang, koin 🪙 berbentuk lingkaran, dan rambu lalu lintas ⚠️ berbentuk segitiga!</p>
+                </div>
+            </div>
+
+            <!-- Unsur-Unsur Card -->
+            <div class="card card-blue animate-on-hover">
+                <h2>🧩 Unsur-Unsur Bangun Datar</h2>
+                <p>Setiap bangun datar memiliki unsur-unsur penting. Yuk kenali satu per satu! 👇</p>
+
+                <div class="unsur-grid">
+                    <div class="unsur-item titik" onclick="showUnsurDetail('titik')">
+                        <div class="unsur-icon">📍</div>
+                        <h4 style="color: var(--red);">Titik Sudut</h4>
+                        <p>Titik pertemuan dua buah sisi</p>
+                        <span class="badge badge-titik">Klik untuk detail!</span>
+                    </div>
+                    <div class="unsur-item sisi" onclick="showUnsurDetail('sisi')">
+                        <div class="unsur-icon">📏</div>
+                        <h4 style="color: var(--blue);">Sisi</h4>
+                        <p>Garis lurus pembatas bangun datar</p>
+                        <span class="badge badge-sisi">Klik untuk detail!</span>
+                    </div>
+                    <div class="unsur-item sudut" onclick="showUnsurDetail('sudut')">
+                        <div class="unsur-icon">📐</div>
+                        <h4 style="color: var(--green);">Sudut</h4>
+                        <p>Daerah antara dua sisi yang bertemu</p>
+                        <span class="badge badge-sudut">Klik untuk detail!</span>
+                    </div>
+                    <div class="unsur-item sisi" onclick="showUnsurDetail('diagonal')" style="border-color: var(--purple);">
+                        <div class="unsur-icon">✂️</div>
+                        <h4 style="color: var(--purple);">Diagonal</h4>
+                        <p>Garis yang menghubungkan dua titik sudut berhadapan</p>
+                        <span class="badge badge-diagonal">Klik untuk detail!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Titik Sudut -->
+            <div class="card card-orange animate-on-hover">
+                <h2>📍 1. Titik Sudut</h2>
+                <p>Titik sudut adalah <strong>titik tempat bertemunya dua buah sisi</strong> pada bangun datar. Titik sudut biasanya ditandai dengan huruf kapital seperti A, B, C, D.</p>
+                <div style="text-align:center; margin: 20px 0;">
+                    <svg width="250" height="200" viewBox="0 0 250 200">
+                        <!-- Segitiga -->
+                        <polygon points="125,30 30,170 220,170" fill="#FFE66D" stroke="#FF8C42" stroke-width="3"/>
+                        <!-- Titik sudut -->
+                        <circle cx="125" cy="30" r="8" fill="#FF6B6B"/>
+                        <circle cx="30" cy="170" r="8" fill="#FF6B6B"/>
+                        <circle cx="220" cy="170" r="8" fill="#FF6B6B"/>
+                        <!-- Label -->
+                        <text x="120" y="20" font-family="Fredoka One" font-size="16" fill="#FF6B6B" text-anchor="middle">A</text>
+                        <text x="15" y="190" font-family="Fredoka One" font-size="16" fill="#FF6B6B" text-anchor="middle">B</text>
+                        <text x="235" y="190" font-family="Fredoka One" font-size="16" fill="#FF6B6B" text-anchor="middle">C</text>
+                        <!-- Panah ke titik -->
+                        <text x="160" y="50" font-size="12" fill="#666" font-weight="bold">← Titik Sudut A</text>
+                    </svg>
+                    <p style="color:#888; font-size:0.95em;">Segitiga memiliki <strong>3 titik sudut</strong>: A, B, dan C</p>
+                </div>
+            </div>
+
+            <!-- Detail Sisi -->
+            <div class="card card-green animate-on-hover">
+                <h2>📏 2. Sisi</h2>
+                <p>Sisi adalah <strong>garis lurus yang membatasi bangun datar</strong>. Sisi menghubungkan satu titik sudut ke titik sudut lainnya.</p>
+                <div style="text-align:center; margin: 20px 0;">
+                    <svg width="280" height="220" viewBox="0 0 280 220">
+                        <!-- Persegi panjang -->
+                        <rect x="40" y="40" width="200" height="130" fill="#C8E6C9" stroke="#4CAF50" stroke-width="2" rx="2"/>
+                        <!-- Sisi-sisi berwarna -->
+                        <line x1="40" y1="40" x2="240" y2="40" stroke="#FF6B6B" stroke-width="5"/>
+                        <line x1="240" y1="40" x2="240" y2="170" stroke="#4ECDC4" stroke-width="5"/>
+                        <line x1="240" y1="170" x2="40" y2="170" stroke="#FF8C42" stroke-width="5"/>
+                        <line x1="40" y1="170" x2="40" y2="40" stroke="#A06CD5" stroke-width="5"/>
+                        <!-- Titik -->
+                        <circle cx="40" cy="40" r="6" fill="#333"/>
+                        <circle cx="240" cy="40" r="6" fill="#333"/>
+                        <circle cx="240" cy="170" r="6" fill="#333"/>
+                        <circle cx="40" cy="170" r="6" fill="#333"/>
+                        <!-- Label -->
+                        <text x="25" y="35" font-family="Fredoka One" font-size="14" fill="#333">A</text>
+                        <text x="248" y="35" font-family="Fredoka One" font-size="14" fill="#333">B</text>
+                        <text x="248" y="188" font-family="Fredoka One" font-size="14" fill="#333">C</text>
+                        <text x="25" y="188" font-family="Fredoka One" font-size="14" fill="#333">D</text>
+                        <!-- Label sisi -->
+                        <text x="140" y="30" font-size="12" fill="#FF6B6B" text-anchor="middle" font-weight="bold">Sisi AB</text>
+                        <text x="260" y="110" font-size="12" fill="#4ECDC4" font-weight="bold">Sisi BC</text>
+                        <text x="140" y="195" font-size="12" fill="#FF8C42" text-anchor="middle" font-weight="bold">Sisi CD</text>
+                        <text x="10" y="110" font-size="12" fill="#A06CD5" font-weight="bold" text-anchor="end" transform="rotate(-90, 10, 110)">Sisi DA</text>
+                    </svg>
+                    <p style="color:#888; font-size:0.95em;">Persegi panjang memiliki <strong>4 sisi</strong>: AB, BC, CD, DA</p>
+                </div>
+            </div>
+
+            <!-- Detail Sudut -->
+            <div class="card card-purple animate-on-hover">
+                <h2>📐 3. Sudut</h2>
+                <p>Sudut adalah <strong>daerah yang dibentuk oleh dua sisi yang bertemu</strong> di satu titik. Besar sudut diukur dalam derajat (°).</p>
+                <div style="text-align:center; margin: 20px 0;">
+                    <svg width="250" height="200" viewBox="0 0 250 200">
+                        <!-- Persegi -->
+                        <rect x="50" y="30" width="150" height="150" fill="#E1BEE7" stroke="#9C27B0" stroke-width="2"/>
+                        <!-- Sudut siku-siku -->
+                        <rect x="50" y="30" width="20" height="20" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+                        <rect x="180" y="30" width="20" height="20" fill="none" stroke="#4ECDC4" stroke-width="2"/>
+                        <rect x="180" y="160" width="20" height="20" fill="none" stroke="#FF8C42" stroke-width="2"/>
+                        <rect x="50" y="160" width="20" height="20" fill="none" stroke="#A06CD5" stroke-width="2"/>
+                        <!-- Label sudut -->
+                        <text x="85" y="55" font-size="11" fill="#FF6B6B" font-weight="bold">90°</text>
+                        <text x="165" y="55" font-size="11" fill="#4ECDC4" font-weight="bold">90°</text>
+                        <text x="165" y="172" font-size="11" fill="#FF8C42" font-weight="bold">90°</text>
+                        <text x="85" y="172" font-size="11" fill="#A06CD5" font-weight="bold">90°</text>
+                        <!-- Keterangan -->
+                        <text x="125" y="195" font-size="11" fill="#666" text-anchor="middle" font-weight="bold">Persegi: 4 sudut siku-siku (90°)</text>
+                    </svg>
+                </div>
+                <div class="info-box">
+                    <h4>📌 Jenis-Jenis Sudut:</h4>
+                    <ul class="emoji-bullet">
+                        <li>🔹 <strong>Sudut Lancip:</strong> kurang dari 90° (seperti sudut segitiga tajam)</li>
+                        <li>🔹 <strong>Sudut Siku-siku:</strong> tepat 90° (seperti sudut persegi)</li>
+                        <li>🔹 <strong>Sudut Tumpul:</strong> lebih dari 90° tapi kurang dari 180°</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Detail Diagonal -->
+            <div class="card card-yellow animate-on-hover">
+                <h2>✂️ 4. Diagonal</h2>
+                <p>Diagonal adalah <strong>garis yang menghubungkan dua titik sudut yang berhadapan</strong> (tidak bersebelahan). Tidak semua bangun datar punya diagonal!</p>
+                <div style="text-align:center; margin: 20px 0;">
+                    <svg width="280" height="220" viewBox="0 0 280 220">
+                        <!-- Persegi panjang -->
+                        <rect x="40" y="40" width="200" height="130" fill="#FFF9C4" stroke="#FFC107" stroke-width="3"/>
+                        <!-- Diagonal -->
+                        <line x1="40" y1="40" x2="240" y2="170" stroke="#A06CD5" stroke-width="4" stroke-dasharray="10,5"/>
+                        <line x1="240" y1="40" x2="40" y2="170" stroke="#FF6B9D" stroke-width="4" stroke-dasharray="10,5"/>
+                        <!-- Titik -->
+                        <circle cx="40" cy="40" r="6" fill="#333"/>
+                        <circle cx="240" cy="40" r="6" fill="#333"/>
+                        <circle cx="240" cy="170" r="6" fill="#333"/>
+                        <circle cx="40" cy="170" r="6" fill="#333"/>
+                        <!-- Label -->
+                        <text x="25" y="35" font-family="Fredoka One" font-size="14" fill="#333">A</text>
+                        <text x="248" y="35" font-family="Fredoka One" font-size="14" fill="#333">B</text>
+                        <text x="248" y="188" font-family="Fredoka One" font-size="14" fill="#333">C</text>
+                        <text x="25" y="188" font-family="Fredoka One" font-size="14" fill="#333">D</text>
+                        <!-- Keterangan -->
+                        <text x="160" y="90" font-size="12" fill="#A06CD5" font-weight="bold">Diagonal AC</text>
+                        <text x="70" y="90" font-size="12" fill="#FF6B9D" font-weight="bold">Diagonal BD</text>
+                    </svg>
+                    <p style="color:#888; font-size:0.95em;">Persegi panjang memiliki <strong>2 diagonal</strong>: AC dan BD</p>
+                </div>
+                <div class="info-box warning">
+                    <h4>⚠️ Ingat!</h4>
+                    <p>Segitiga <strong>TIDAK memiliki diagonal</strong> karena semua titik sudutnya bersebelahan. Diagonal baru ada mulai dari bangun yang memiliki 4 sisi ke atas!</p>
+                </div>
+            </div>
+
+            <!-- Tabel Ringkasan -->
+            <div class="card card-blue animate-on-hover">
+                <h2>📊 Tabel Ringkasan</h2>
+                <div style="overflow-x: auto;">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Bangun Datar</th>
+                                <th>Sisi</th>
+                                <th>Titik Sudut</th>
+                                <th>Sudut</th>
+                                <th>Diagonal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>🔺 Segitiga</td><td>3</td><td>3</td><td>3</td><td>0</td></tr>
+                            <tr><td>🟥 Persegi</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>🟦 Persegi Panjang</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>🔶 Jajar Genjang</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>🔷 Belah Ketupat</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>⬡ Trapesium</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>🔵 Layang-layang</td><td>4</td><td>4</td><td>4</td><td>2</td></tr>
+                            <tr><td>⭕ Lingkaran</td><td>1 (lengkung)</td><td>0</td><td>0</td><td>0</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: BANGUN DATAR ==================== -->
+        <div class="section" id="section-bentuk">
+            <div class="card card-blue">
+                <h2>🔷 Jenis-Jenis Bangun Datar</h2>
+                <p>Klik setiap bangun untuk melihat detail unsur-unsurnya! 🖱️</p>
+            </div>
+
+            <div class="shape-display">
+                <!-- Segitiga -->
+                <div class="shape-card" onclick="showShapeModal('segitiga')">
+                    <svg viewBox="0 0 160 160">
+                        <polygon points="80,20 20,140 140,140" fill="#FF6B6B" stroke="#CC4444" stroke-width="3" opacity="0.9"/>
+                        <circle cx="80" cy="20" r="5" fill="#FFE66D"/>
+                        <circle cx="20" cy="140" r="5" fill="#FFE66D"/>
+                        <circle cx="140" cy="140" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🔺 Segitiga</h4>
+                    <p>3 sisi, 3 sudut, 3 titik sudut</p>
+                </div>
+
+                <!-- Persegi -->
+                <div class="shape-card" onclick="showShapeModal('persegi')">
+                    <svg viewBox="0 0 160 160">
+                        <rect x="25" y="25" width="110" height="110" fill="#4ECDC4" stroke="#2AB7CA" stroke-width="3" rx="3"/>
+                        <circle cx="25" cy="25" r="5" fill="#FFE66D"/>
+                        <circle cx="135" cy="25" r="5" fill="#FFE66D"/>
+                        <circle cx="135" cy="135" r="5" fill="#FFE66D"/>
+                        <circle cx="25" cy="135" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🟩 Persegi</h4>
+                    <p>4 sisi sama, 4 sudut siku-siku</p>
+                </div>
+
+                <!-- Persegi Panjang -->
+                <div class="shape-card" onclick="showShapeModal('persegipanjang')">
+                    <svg viewBox="0 0 160 160">
+                        <rect x="15" y="40" width="130" height="80" fill="#A06CD5" stroke="#7B2FBE" stroke-width="3" rx="3"/>
+                        <circle cx="15" cy="40" r="5" fill="#FFE66D"/>
+                        <circle cx="145" cy="40" r="5" fill="#FFE66D"/>
+                        <circle cx="145" cy="120" r="5" fill="#FFE66D"/>
+                        <circle cx="15" cy="120" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🟦 Persegi Panjang</h4>
+                    <p>Sisi berhadapan sama panjang</p>
+                </div>
+
+                <!-- Segitiga Sama Sisi -->
+                <div class="shape-card" onclick="showShapeModal('jajargenjang')">
+                    <svg viewBox="0 0 160 160">
+                        <polygon points="40,130 70,30 150,30 120,130" fill="#FF8C42" stroke="#CC6B20" stroke-width="3"/>
+                        <circle cx="40" cy="130" r="5" fill="#FFE66D"/>
+                        <circle cx="70" cy="30" r="5" fill="#FFE66D"/>
+                        <circle cx="150" cy="30" r="5" fill="#FFE66D"/>
+                        <circle cx="120" cy="130" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🔶 Jajar Genjang</h4>
+                    <p>Sisi berhadapan sejajar & sama</p>
+                </div>
+
+                <!-- Belah Ketupat -->
+                <div class="shape-card" onclick="showShapeModal('belahketupat')">
+                    <svg viewBox="0 0 160 160">
+                        <polygon points="80,15 145,80 80,145 15,80" fill="#95E06C" stroke="#5CBD3A" stroke-width="3"/>
+                        <circle cx="80" cy="15" r="5" fill="#FFE66D"/>
+                        <circle cx="145" cy="80" r="5" fill="#FFE66D"/>
+                        <circle cx="80" cy="145" r="5" fill="#FFE66D"/>
+                        <circle cx="15" cy="80" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🔷 Belah Ketupat</h4>
+                    <p>4 sisi sama, diagonal tegak lurus</p>
+                </div>
+
+                <!-- Trapesium -->
+                <div class="shape-card" onclick="showShapeModal('trapesium')">
+                    <svg viewBox="0 0 160 160">
+                        <polygon points="45,40 115,40 140,130 20,130" fill="#45B7D1" stroke="#2A8FA8" stroke-width="3"/>
+                        <circle cx="45" cy="40" r="5" fill="#FFE66D"/>
+                        <circle cx="115" cy="40" r="5" fill="#FFE66D"/>
+                        <circle cx="140" cy="130" r="5" fill="#FFE66D"/>
+                        <circle cx="20" cy="130" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>⬡ Trapesium</h4>
+                    <p>Memiliki sepasang sisi sejajar</p>
+                </div>
+
+                <!-- Layang-layang -->
+                <div class="shape-card" onclick="showShapeModal('layanglayang')">
+                    <svg viewBox="0 0 160 160">
+                        <polygon points="80,15 130,60 80,145 30,60" fill="#FFB6C1" stroke="#FF69B4" stroke-width="3"/>
+                        <circle cx="80" cy="15" r="5" fill="#FFE66D"/>
+                        <circle cx="130" cy="60" r="5" fill="#FFE66D"/>
+                        <circle cx="80" cy="145" r="5" fill="#FFE66D"/>
+                        <circle cx="30" cy="60" r="5" fill="#FFE66D"/>
+                    </svg>
+                    <h4>🪁 Layang-layang</h4>
+                    <p>2 pasang sisi berdekatan sama</p>
+                </div>
+
+                <!-- Lingkaran -->
+                <div class="shape-card" onclick="showShapeModal('lingkaran')">
+                    <svg viewBox="0 0 160 160">
+                        <circle cx="80" cy="80" r="60" fill="#FFE66D" stroke="#FFD700" stroke-width="3"/>
+                        <circle cx="80" cy="80" r="3" fill="#FF6B6B"/>
+                        <line x1="80" y1="80" x2="140" y2="80" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="5,3"/>
+                        <text x="105" y="75" font-size="11" fill="#FF6B6B" font-weight="bold">r</text>
+                    </svg>
+                    <h4>⭕ Lingkaran</h4>
+                    <p>Tidak punya sudut & titik sudut</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: INTERAKTIF ==================== -->
+        <div class="section" id="section-interaktif">
+            <div class="card card-purple">
+                <h2>🔍 Eksplorasi Interaktif</h2>
+                <p>Pilih bangun datar lalu klik tombol untuk menyoroti unsur-unsurnya!</p>
+
+                <div class="shape-selector">
+                    <button class="shape-select-btn selected" onclick="selectExploreShape('persegi-e')">🟩 Persegi</button>
+                    <button class="shape-select-btn" onclick="selectExploreShape('persegipanjang-e')">🟦 Persegi Panjang</button>
+                    <button class="shape-select-btn" onclick="selectExploreShape('segitiga-e')">🔺 Segitiga</button>
+                    <button class="shape-select-btn" onclick="selectExploreShape('belahketupat-e')">🔷 Belah Ketupat</button>
+                    <button class="shape-select-btn" onclick="selectExploreShape('trapesium-e')">⬡ Trapesium</button>
+                </div>
+
+                <div class="explore-container">
+                    <div class="explore-svg-wrap">
+                        <!-- Persegi -->
+                        <svg id="explore-persegi-e" class="explore-shape" viewBox="0 0 300 300" width="300" height="300">
+                            <rect class="shape-fill" x="50" y="50" width="200" height="200" fill="#E8F5E9" stroke="#4CAF50" stroke-width="3"/>
+                            <!-- Sisi -->
+                            <line class="sisi sisi-1" x1="50" y1="50" x2="250" y2="50" stroke="#4CAF50" stroke-width="3"/>
+                            <line class="sisi sisi-2" x1="250" y1="50" x2="250" y2="250" stroke="#4CAF50" stroke-width="3"/>
+                            <line class="sisi sisi-3" x1="250" y1="250" x2="50" y2="250" stroke="#4CAF50" stroke-width="3"/>
+                            <line class="sisi sisi-4" x1="50" y1="250" x2="50" y2="50" stroke="#4CAF50" stroke-width="3"/>
+                            <!-- Diagonal -->
+                            <line class="diagonal diagonal-1" x1="50" y1="50" x2="250" y2="250" stroke="transparent" stroke-width="0"/>
+                            <line class="diagonal diagonal-2" x1="250" y1="50" x2="50" y2="250" stroke="transparent" stroke-width="0"/>
+                            <!-- Titik Sudut -->
+                            <circle class="titik-sudut ts-1" cx="50" cy="50" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-2" cx="250" cy="50" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-3" cx="250" cy="250" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-4" cx="50" cy="250" r="6" fill="#333"/>
+                            <!-- Sudut markers -->
+                            <path class="sudut-mark sm-1" d="M70,50 L70,70 L50,70" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-2" d="M230,50 L230,70 L250,70" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-3" d="M230,250 L230,230 L250,230" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-4" d="M70,250 L70,230 L50,230" fill="none" stroke="transparent" stroke-width="0"/>
+                            <!-- Labels -->
+                            <text class="label-titik" x="40" y="40" font-family="Fredoka One" font-size="16" fill="#333">A</text>
+                            <text class="label-titik" x="255" y="40" font-family="Fredoka One" font-size="16" fill="#333">B</text>
+                            <text class="label-titik" x="255" y="270" font-family="Fredoka One" font-size="16" fill="#333">C</text>
+                            <text class="label-titik" x="40" y="270" font-family="Fredoka One" font-size="16" fill="#333">D</text>
+                        </svg>
+
+                        <!-- Persegi Panjang -->
+                        <svg id="explore-persegipanjang-e" class="explore-shape" viewBox="0 0 300 250" width="300" height="250" style="display:none;">
+                            <rect class="shape-fill" x="30" y="60" width="240" height="130" fill="#E3F2FD" stroke="#2196F3" stroke-width="3"/>
+                            <line class="sisi sisi-1" x1="30" y1="60" x2="270" y2="60" stroke="#2196F3" stroke-width="3"/>
+                            <line class="sisi sisi-2" x1="270" y1="60" x2="270" y2="190" stroke="#2196F3" stroke-width="3"/>
+                            <line class="sisi sisi-3" x1="270" y1="190" x2="30" y2="190" stroke="#2196F3" stroke-width="3"/>
+                            <line class="sisi sisi-4" x1="30" y1="190" x2="30" y2="60" stroke="#2196F3" stroke-width="3"/>
+                            <line class="diagonal diagonal-1" x1="30" y1="60" x2="270" y2="190" stroke="transparent" stroke-width="0"/>
+                            <line class="diagonal diagonal-2" x1="270" y1="60" x2="30" y2="190" stroke="transparent" stroke-width="0"/>
+                            <circle class="titik-sudut ts-1" cx="30" cy="60" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-2" cx="270" cy="60" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-3" cx="270" cy="190" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-4" cx="30" cy="190" r="6" fill="#333"/>
+                            <path class="sudut-mark sm-1" d="M50,60 L50,80 L30,80" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-2" d="M250,60 L250,80 L270,80" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-3" d="M250,190 L250,170 L270,170" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-4" d="M50,190 L50,170 L30,170" fill="none" stroke="transparent" stroke-width="0"/>
+                            <text class="label-titik" x="17" y="52" font-family="Fredoka One" font-size="16" fill="#333">A</text>
+                            <text class="label-titik" x="275" y="52" font-family="Fredoka One" font-size="16" fill="#333">B</text>
+                            <text class="label-titik" x="275" y="208" font-family="Fredoka One" font-size="16" fill="#333">C</text>
+                            <text class="label-titik" x="17" y="208" font-family="Fredoka One" font-size="16" fill="#333">D</text>
+                        </svg>
+
+                        <!-- Segitiga -->
+                        <svg id="explore-segitiga-e" class="explore-shape" viewBox="0 0 300 280" width="300" height="280" style="display:none;">
+                            <polygon class="shape-fill" points="150,30 30,250 270,250" fill="#FFEBEE" stroke="#F44336" stroke-width="3"/>
+                            <line class="sisi sisi-1" x1="150" y1="30" x2="30" y2="250" stroke="#F44336" stroke-width="3"/>
+                            <line class="sisi sisi-2" x1="30" y1="250" x2="270" y2="250" stroke="#F44336" stroke-width="3"/>
+                            <line class="sisi sisi-3" x1="270" y1="250" x2="150" y2="30" stroke="#F44336" stroke-width="3"/>
+                            <circle class="titik-sudut ts-1" cx="150" cy="30" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-2" cx="30" cy="250" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-3" cx="270" cy="250" r="6" fill="#333"/>
+                            <path class="sudut-mark sm-1" d="M140,50 L150,55 L160,50" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-2" d="M50,245 L45,235 L35,240" fill="none" stroke="transparent" stroke-width="0"/>
+                            <path class="sudut-mark sm-3" d="M250,245 L255,235 L265,240" fill="none" stroke="transparent" stroke-width="0"/>
+                            <text class="label-titik" x="145" y="22" font-family="Fredoka One" font-size="16" fill="#333">A</text>
+                            <text class="label-titik" x="10" y="268" font-family="Fredoka One" font-size="16" fill="#333">B</text>
+                            <text class="label-titik" x="275" y="268" font-family="Fredoka One" font-size="16" fill="#333">C</text>
+                        </svg>
+
+                        <!-- Belah Ketupat -->
+                        <svg id="explore-belahketupat-e" class="explore-shape" viewBox="0 0 300 300" width="300" height="300" style="display:none;">
+                            <polygon class="shape-fill" points="150,30 270,150 150,270 30,150" fill="#F3E5F5" stroke="#9C27B0" stroke-width="3"/>
+                            <line class="sisi sisi-1" x1="150" y1="30" x2="270" y2="150" stroke="#9C27B0" stroke-width="3"/>
+                            <line class="sisi sisi-2" x1="270" y1="150" x2="150" y2="270" stroke="#9C27B0" stroke-width="3"/>
+                            <line class="sisi sisi-3" x1="150" y1="270" x2="30" y2="150" stroke="#9C27B0" stroke-width="3"/>
+                            <line class="sisi sisi-4" x1="30" y1="150" x2="150" y2="30" stroke="#9C27B0" stroke-width="3"/>
+                            <line class="diagonal diagonal-1" x1="150" y1="30" x2="150" y2="270" stroke="transparent" stroke-width="0"/>
+                            <line class="diagonal diagonal-2" x1="30" y1="150" x2="270" y2="150" stroke="transparent" stroke-width="0"/>
+                            <circle class="titik-sudut ts-1" cx="150" cy="30" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-2" cx="270" cy="150" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-3" cx="150" cy="270" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-4" cx="30" cy="150" r="6" fill="#333"/>
+                            <text class="label-titik" x="145" y="22" font-family="Fredoka One" font-size="16" fill="#333">A</text>
+                            <text class="label-titik" x="278" y="155" font-family="Fredoka One" font-size="16" fill="#333">B</text>
+                            <text class="label-titik" x="145" y="290" font-family="Fredoka One" font-size="16" fill="#333">C</text>
+                            <text class="label-titik" x="10" y="155" font-family="Fredoka One" font-size="16" fill="#333">D</text>
+                        </svg>
+
+                        <!-- Trapesium -->
+                        <svg id="explore-trapesium-e" class="explore-shape" viewBox="0 0 300 250" width="300" height="250" style="display:none;">
+                            <polygon class="shape-fill" points="90,50 210,50 270,200 30,200" fill="#E0F7FA" stroke="#00BCD4" stroke-width="3"/>
+                            <line class="sisi sisi-1" x1="90" y1="50" x2="210" y2="50" stroke="#00BCD4" stroke-width="3"/>
+                            <line class="sisi sisi-2" x1="210" y1="50" x2="270" y2="200" stroke="#00BCD4" stroke-width="3"/>
+                            <line class="sisi sisi-3" x1="270" y1="200" x2="30" y2="200" stroke="#00BCD4" stroke-width="3"/>
+                            <line class="sisi sisi-4" x1="30" y1="200" x2="90" y2="50" stroke="#00BCD4" stroke-width="3"/>
+                            <line class="diagonal diagonal-1" x1="90" y1="50" x2="270" y2="200" stroke="transparent" stroke-width="0"/>
+                            <line class="diagonal diagonal-2" x1="210" y1="50" x2="30" y2="200" stroke="transparent" stroke-width="0"/>
+                            <circle class="titik-sudut ts-1" cx="90" cy="50" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-2" cx="210" cy="50" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-3" cx="270" cy="200" r="6" fill="#333"/>
+                            <circle class="titik-sudut ts-4" cx="30" cy="200" r="6" fill="#333"/>
+                            <text class="label-titik" x="80" y="40" font-family="Fredoka One" font-size="16" fill="#333">A</text>
+                            <text class="label-titik" x="218" y="40" font-family="Fredoka One" font-size="16" fill="#333">B</text>
+                            <text class="label-titik" x="278" y="210" font-family="Fredoka One" font-size="16" fill="#333">C</text>
+                            <text class="label-titik" x="10" y="210" font-family="Fredoka One" font-size="16" fill="#333">D</text>
+                        </svg>
+                    </div>
+
+                    <div class="explore-info">
+                        <h3>🎨 Sorot Unsur:</h3>
+                        <div style="margin: 15px 0;">
+                            <button class="highlight-btn btn-titik-sudut" onclick="highlightUnsur('titik')">📍 Titik Sudut</button>
+                            <button class="highlight-btn btn-sisi" onclick="highlightUnsur('sisi')">📏 Sisi</button>
+                            <button class="highlight-btn btn-sudut" onclick="highlightUnsur('sudut')">📐 Sudut</button>
+                            <button class="highlight-btn btn-diagonal" onclick="highlightUnsur('diagonal')">✂️ Diagonal</button>
+                            <button class="highlight-btn btn-reset-highlight" onclick="highlightUnsur('reset')">🔄 Reset</button>
+                        </div>
+                        <div id="explore-description" class="info-box" style="margin-top: 15px;">
+                            <h4>👆 Klik tombol di atas!</h4>
+                            <p>Pilih unsur yang ingin kamu lihat pada bangun datar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: KUIS ==================== -->
+        <div class="section" id="section-kuis">
+            <div class="card card-orange">
+                <h2>📝 Kuis Bangun Datar</h2>
+                <p>Uji pemahamanmu! Jawab 10 pertanyaan berikut. Semangat! 💪</p>
+
+                <div class="quiz-progress" id="quizProgress"></div>
+
+                <div class="quiz-container" id="quizContainer"></div>
+
+                <div class="score-display" id="scoreDisplay">
+                    <div class="score-stars" id="scoreStars"></div>
+                    <div class="score-number" id="scoreNumber"></div>
+                    <div class="score-message" id="scoreMessage"></div>
+                    <br>
+                    <button class="game-btn check-btn" onclick="restartQuiz()" style="font-size:1.2em; padding:15px 40px;">🔄 Coba Lagi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SECTION: GAME ==================== -->
+        <div class="section" id="section-game">
+            <!-- Game 1: Drag & Drop -->
+            <div class="card card-green">
+                <h2>🎮 Game 1: Cocokkan Unsur!</h2>
+                <p>Seret nama unsur ke bangun datar yang benar! 🖱️</p>
+
+                <div class="game-score" id="dragScore">Skor: 0</div>
+
+                <div class="drag-items" id="dragItemsContainer">
+                    <div class="drag-item" draggable="true" data-answer="3-sisi" id="drag1">3 Sisi</div>
+                    <div class="drag-item" draggable="true" data-answer="4-sisi" id="drag2">4 Sisi</div>
+                    <div class="drag-item" draggable="true" data-answer="3-titik" id="drag3">3 Titik Sudut</div>
+                    <div class="drag-item" draggable="true" data-answer="4-titik" id="drag4">4 Titik Sudut</div>
+                    <div class="drag-item" draggable="true" data-answer="0-diagonal" id="drag5">0 Diagonal</div>
+                    <div class="drag-item" draggable="true" data-answer="2-diagonal" id="drag6">2 Diagonal</div>
+                    <div class="drag-item" draggable="true" data-answer="0-sudut" id="drag7">0 Sudut</div>
+                    <div class="drag-item" draggable="true" data-answer="4-sudut" id="drag8">4 Sudut Siku-siku</div>
+                </div>
+
+                <div class="drop-zones">
+                    <div class="drop-zone" data-accepts="3-sisi,3-titik,0-diagonal" id="dropSegitiga">
+                        <h4>🔺 Segitiga</h4>
+                        <svg viewBox="0 0 80 70" width="60" height="55">
+                            <polygon points="40,5 5,65 75,65" fill="#FF6B6B" stroke="#CC4444" stroke-width="2"/>
+                        </svg>
+                        <div class="dropped-items"></div>
+                    </div>
+                    <div class="drop-zone" data-accepts="4-sisi,4-titik,2-diagonal,4-sudut" id="dropPersegi">
+                        <h4>🟩 Persegi</h4>
+                        <svg viewBox="0 0 80 80" width="55" height="55">
+                            <rect x="5" y="5" width="70" height="70" fill="#4ECDC4" stroke="#2AB7CA" stroke-width="2"/>
+                        </svg>
+                        <div class="dropped-items"></div>
+                    </div>
+                    <div class="drop-zone" data-accepts="0-sudut" id="dropLingkaran">
+                        <h4>⭕ Lingkaran</h4>
+                        <svg viewBox="0 0 80 80" width="55" height="55">
+                            <circle cx="40" cy="40" r="35" fill="#FFE66D" stroke="#FFD700" stroke-width="2"/>
+                        </svg>
+                        <div class="dropped-items"></div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="game-btn check-btn" onclick="checkDragDrop()">✅ Periksa</button>
+                    <button class="game-btn reset-btn" onclick="resetDragDrop()">🔄 Ulang</button>
+                </div>
+
+                <div id="dragFeedback" class="quiz-feedback" style="text-align:center;"></div>
+            </div>
+
+            <!-- Game 2: Hitung Unsur -->
+            <div class="card card-pink">
+                <h2>🎮 Game 2: Hitung Unsur Bangun Datar!</h2>
+                <p>Perhatikan bangun datar, lalu isi jumlah unsur-unsurnya! 🧮</p>
+
+                <div class="counting-game">
+                    <div class="game-score" id="countingScore">Soal: 1 / 5</div>
+
+                    <div class="counting-shape-display" id="countingDisplay">
+                        <svg id="countingSvg" viewBox="0 0 300 300" width="250" height="250"></svg>
+                        <h3 id="countingShapeName" style="margin-top:10px; color: var(--purple);"></h3>
+                    </div>
+
+                    <div class="counting-inputs">
+                        <div class="counting-input-group">
+                            <label>📏 Jumlah Sisi:</label>
+                            <input type="number" id="inputSisi" min="0" max="10" placeholder="?">
+                        </div>
+                        <div class="counting-input-group">
+                            <label>📍 Jumlah Titik Sudut:</label>
+                            <input type="number" id="inputTitik" min="0" max="10" placeholder="?">
+                        </div>
+                        <div class="counting-input-group">
+                            <label>📐 Jumlah Sudut:</label>
+                            <input type="number" id="inputSudut" min="0" max="10" placeholder="?">
+                        </div>
+                        <div class="counting-input-group">
+                            <label>✂️ Jumlah Diagonal:</label>
+                            <input type="number" id="inputDiagonal" min="0" max="10" placeholder="?">
+                        </div>
+                    </div>
+
+                    <div style="text-align:center; margin-top:15px;">
+                        <button class="game-btn check-btn" onclick="checkCounting()">✅ Periksa</button>
+                        <button class="game-btn" style="background: var(--blue);" onclick="nextCounting()">➡️ Berikutnya</button>
+                        <button class="game-btn reset-btn" onclick="resetCounting()">🔄 Mulai Ulang</button>
+                    </div>
+
+                    <div id="countingFeedback" class="quiz-feedback" style="text-align:center; margin-top:15px;"></div>
+                    <div class="game-score" id="countingTotalScore" style="margin-top:10px; color: var(--green);">Skor: 0 / 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shape Detail Modal -->
+    <div class="modal-overlay" id="shapeModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Unsur Detail Modal -->
+    <div class="modal-overlay" id="unsurModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeUnsurModal()">&times;</button>
+            <div id="unsurModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>🌟 Media Pembelajaran Interaktif - Unsur-Unsur Bangun Datar 🌟</p>
+        <p>Dibuat dengan ❤️ untuk Siswa SD</p>
+    </footer>
+
+    <script>
+        // ==================== NAVIGATION ====================
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            document.getElementById('section-' + sectionName).classList.add('active');
+            event.target.classList.add('active');
+
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+
+            if (sectionName === 'kuis' && !quizInitialized) {
+                initQuiz();
+            }
+            if (sectionName === 'game') {
+                initDragDrop();
+                if (!countingInitialized) initCounting();
+            }
+        }
+
+        // ==================== SHAPE MODAL ====================
+        const shapeData = {
+            segitiga: {
+                nama: '🔺 Segitiga',
+                svg: `<svg viewBox="0 0 200 180" width="200" height="180">
+                    <polygon points="100,20 20,160 180,160" fill="#FF6B6B" stroke="#CC4444" stroke-width="3"/>
+                    <circle cx="100" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="20" cy="160" r="6" fill="#FFE66D"/>
+                    <circle cx="180" cy="160" r="6" fill="#FFE66D"/>
+                    <text x="95" y="12" font-size="12" fill="#333" font-weight="bold">A</text>
+                    <text x="5" y="175" font-size="12" fill="#333" font-weight="bold">B</text>
+                    <text x="185" y="175" font-size="12" fill="#333" font-weight="bold">C</text>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '3 sisi (AB, BC, CA)' },
+                    { icon: '📍', label: 'Titik Sudut', value: '3 titik (A, B, C)' },
+                    { icon: '📐', label: 'Sudut', value: '3 sudut' },
+                    { icon: '✂️', label: 'Diagonal', value: '0 (tidak ada)' }
+                ],
+                ciri: 'Bangun datar paling sederhana. Memiliki 3 sisi lurus. Jumlah seluruh sudutnya = 180°.'
+            },
+            persegi: {
+                nama: '🟩 Persegi',
+                svg: `<svg viewBox="0 0 200 200" width="180" height="180">
+                    <rect x="20" y="20" width="160" height="160" fill="#4ECDC4" stroke="#2AB7CA" stroke-width="3"/>
+                    <circle cx="20" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="180" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="180" cy="180" r="6" fill="#FFE66D"/>
+                    <circle cx="20" cy="180" r="6" fill="#FFE66D"/>
+                    <line x1="20" y1="20" x2="180" y2="180" stroke="#A06CD5" stroke-width="2" stroke-dasharray="5,3"/>
+                    <line x1="180" y1="20" x2="20" y2="180" stroke="#FF6B9D" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="8" y="14" font-size="12" fill="#333" font-weight="bold">A</text>
+                    <text x="185" y="14" font-size="12" fill="#333" font-weight="bold">B</text>
+                    <text x="185" y="196" font-size="12" fill="#333" font-weight="bold">C</text>
+                    <text x="8" y="196" font-size="12" fill="#333" font-weight="bold">D</text>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi sama panjang' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik (A, B, C, D)' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut siku-siku (90°)' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal sama panjang' }
+                ],
+                ciri: 'Semua sisi sama panjang. Semua sudut 90°. Kedua diagonal sama panjang dan saling membagi dua sama panjang.'
+            },
+            persegipanjang: {
+                nama: '🟦 Persegi Panjang',
+                svg: `<svg viewBox="0 0 240 160" width="220" height="150">
+                    <rect x="20" y="20" width="200" height="120" fill="#A06CD5" stroke="#7B2FBE" stroke-width="3"/>
+                    <circle cx="20" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="220" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="220" cy="140" r="6" fill="#FFE66D"/>
+                    <circle cx="20" cy="140" r="6" fill="#FFE66D"/>
+                    <line x1="20" y1="20" x2="220" y2="140" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="5,3"/>
+                    <line x1="220" y1="20" x2="20" y2="140" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,3"/>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi, berhadapan sama panjang' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik sudut' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut siku-siku (90°)' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal sama panjang' }
+                ],
+                ciri: 'Panjang ≠ lebar. Sisi yang berhadapan sejajar dan sama panjang. Semua sudut 90°.'
+            },
+            jajargenjang: {
+                nama: '🔶 Jajar Genjang',
+                svg: `<svg viewBox="0 0 240 160" width="220" height="150">
+                    <polygon points="60,20 220,20 180,140 20,140" fill="#FF8C42" stroke="#CC6B20" stroke-width="3"/>
+                    <circle cx="60" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="220" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="180" cy="140" r="6" fill="#FFE66D"/>
+                    <circle cx="20" cy="140" r="6" fill="#FFE66D"/>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi, berhadapan sama & sejajar' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik sudut' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut (berhadapan sama besar)' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal tidak sama panjang' }
+                ],
+                ciri: 'Sisi berhadapan sejajar dan sama panjang. Sudut berhadapan sama besar. Diagonal saling membagi dua sama panjang.'
+            },
+            belahketupat: {
+                nama: '🔷 Belah Ketupat',
+                svg: `<svg viewBox="0 0 200 200" width="180" height="180">
+                    <polygon points="100,10 190,100 100,190 10,100" fill="#95E06C" stroke="#5CBD3A" stroke-width="3"/>
+                    <line x1="100" y1="10" x2="100" y2="190" stroke="#A06CD5" stroke-width="2" stroke-dasharray="5,3"/>
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="#FF6B9D" stroke-width="2" stroke-dasharray="5,3"/>
+                    <circle cx="100" cy="10" r="6" fill="#FFE66D"/>
+                    <circle cx="190" cy="100" r="6" fill="#FFE66D"/>
+                    <circle cx="100" cy="190" r="6" fill="#FFE66D"/>
+                    <circle cx="10" cy="100" r="6" fill="#FFE66D"/>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi sama panjang' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik sudut' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut (berhadapan sama)' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal tegak lurus' }
+                ],
+                ciri: 'Semua sisi sama panjang. Diagonal saling tegak lurus dan membagi dua sama panjang.'
+            },
+            trapesium: {
+                nama: '⬡ Trapesium',
+                svg: `<svg viewBox="0 0 240 160" width="220" height="150">
+                    <polygon points="70,20 170,20 220,140 20,140" fill="#45B7D1" stroke="#2A8FA8" stroke-width="3"/>
+                    <circle cx="70" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="170" cy="20" r="6" fill="#FFE66D"/>
+                    <circle cx="220" cy="140" r="6" fill="#FFE66D"/>
+                    <circle cx="20" cy="140" r="6" fill="#FFE66D"/>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi (1 pasang sejajar)' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik sudut' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal' }
+                ],
+                ciri: 'Memiliki tepat satu pasang sisi yang sejajar. Sisi sejajar disebut sisi alas dan sisi atas.'
+            },
+            layanglayang: {
+                nama: '🪁 Layang-layang',
+                svg: `<svg viewBox="0 0 200 220" width="180" height="200">
+                    <polygon points="100,10 170,70 100,200 30,70" fill="#FFB6C1" stroke="#FF69B4" stroke-width="3"/>
+                    <line x1="100" y1="10" x2="100" y2="200" stroke="#A06CD5" stroke-width="2" stroke-dasharray="5,3"/>
+                    <line x1="30" y1="70" x2="170" y2="70" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="5,3"/>
+                    <circle cx="100" cy="10" r="6" fill="#FFE66D"/>
+                    <circle cx="170" cy="70" r="6" fill="#FFE66D"/>
+                    <circle cx="100" cy="200" r="6" fill="#FFE66D"/>
+                    <circle cx="30" cy="70" r="6" fill="#FFE66D"/>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '4 sisi (2 pasang berdekatan sama)' },
+                    { icon: '📍', label: 'Titik Sudut', value: '4 titik sudut' },
+                    { icon: '📐', label: 'Sudut', value: '4 sudut (1 pasang berhadapan sama)' },
+                    { icon: '✂️', label: 'Diagonal', value: '2 diagonal tegak lurus' }
+                ],
+                ciri: 'Dua pasang sisi berdekatan sama panjang. Salah satu diagonal membagi diagonal lainnya sama panjang.'
+            },
+            lingkaran: {
+                nama: '⭕ Lingkaran',
+                svg: `<svg viewBox="0 0 200 200" width="180" height="180">
+                    <circle cx="100" cy="100" r="80" fill="#FFE66D" stroke="#FFD700" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="4" fill="#FF6B6B"/>
+                    <line x1="100" y1="100" x2="180" y2="100" stroke="#FF6B6B" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="135" y="95" font-size="14" fill="#FF6B6B" font-weight="bold">r (jari-jari)</text>
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#4ECDC4" stroke-width="2" stroke-dasharray="8,4"/>
+                    <text x="65" y="120" font-size="12" fill="#4ECDC4" font-weight="bold">d (diameter)</text>
+                    <text x="92" y="92" font-size="11" fill="#333" font-weight="bold">O</text>
+                </svg>`,
+                unsur: [
+                    { icon: '📏', label: 'Sisi', value: '1 sisi lengkung (keliling)' },
+                    { icon: '📍', label: 'Titik Sudut', value: '0 (tidak ada)' },
+                    { icon: '📐', label: 'Sudut', value: '0 (tidak ada)' },
+                    { icon: '✂️', label: 'Diagonal', value: '0 (tidak ada)' }
+                ],
+                ciri: 'Bangun datar yang unik! Memiliki titik pusat (O), jari-jari (r), dan diameter (d = 2r). Semua titik di tepinya berjarak sama dari pusat.'
+            }
+        };
+
+        function showShapeModal(shapeName) {
+            const data = shapeData[shapeName];
+            const modal = document.getElementById('shapeModal');
+            const body = document.getElementById('modalBody');
+
+            let unsurHTML = data.unsur.map(u => `
+                <div style="display:flex; align-items:center; gap:10px; padding:10px; background:#f8f9fa; border-radius:10px; margin:5px 0;">
+                    <span style="font-size:1.5em;">${u.icon}</span>
+                    <div><strong>${u.label}:</strong> ${u.value}</div>
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <div style="text-align:center;">
+                    <h2 style="font-family:'Fredoka One',cursive; font-size:1.8em; margin-bottom:15px;">${data.nama}</h2>
+                    ${data.svg}
+                </div>
+                <h3 style="font-family:'Fredoka One',cursive; margin:15px 0 10px; color:#555;">📋 Unsur-Unsur:</h3>
+                ${unsurHTML}
+                <div class="info-box tip" style="margin-top:15px;">
+                    <h4>🌟 Ciri-Ciri:</h4>
+                    <p>${data.ciri}</p>
+                </div>
+            `;
+
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('shapeModal').classList.remove('show');
+        }
+
+        // ==================== UNSUR DETAIL MODAL ====================
+        const unsurDetails = {
+            titik: {
+                title: '📍 Titik Sudut',
+                content: `
+                    <h2 style="font-family:'Fredoka One',cursive; color:var(--red);">📍 Titik Sudut</h2>
+                    <p style="font-size:1.15em; line-height:1.8; margin:15px 0;">
+                        Titik sudut adalah <strong>titik pertemuan antara dua buah sisi</strong> pada bangun datar. Titik sudut biasa diberi nama dengan <strong>huruf kapital</strong> (A, B, C, D, ...).
+                    </p>
+                    <div style="text-align:center;">
+                        <svg viewBox="0 0 200 160" width="200">
+                            <polygon points="100,20 20,140 180,140" fill="#FFEBEE" stroke="#F44336" stroke-width="2"/>
+                            <circle cx="100" cy="20" r="10" fill="#FF6B6B"><animate attributeName="r" values="8;12;8" dur="1s" repeatCount="indefinite"/></circle>
+                            <circle cx="20" cy="140" r="10" fill="#FF6B6B"><animate attributeName="r" values="8;12;8" dur="1s" repeatCount="indefinite"/></circle>
+                            <circle cx="180" cy="140" r="10" fill="#FF6B6B"><animate attributeName="r" values="8;12;8" dur="1s" repeatCount="indefinite"/></circle>
+                        </svg>
+                        <p style="color:#888;">Titik-titik merah berkedip = titik sudut!</p>
+                    </div>
+                    <div class="info-box">
+                        <h4>📌 Contoh:</h4>
+                        <ul><li>Segitiga → 3 titik sudut</li><li>Persegi → 4 titik sudut</li><li>Lingkaran → 0 titik sudut</li></ul>
+                    </div>
+                `
+            },
+            sisi: {
+                title: '📏 Sisi',
+                content: `
+                    <h2 style="font-family:'Fredoka One',cursive; color:var(--blue);">📏 Sisi</h2>
+                    <p style="font-size:1.15em; line-height:1.8; margin:15px 0;">
+                        Sisi adalah <strong>ruas garis yang membatasi bangun datar</strong>. Sisi menghubungkan satu titik sudut ke titik sudut berikutnya.
+                    </p>
+                    <div style="text-align:center;">
+                        <svg viewBox="0 0 200 200" width="180">
+                            <rect x="30" y="30" width="140" height="140" fill="#E3F2FD" stroke="#ccc" stroke-width="1"/>
+                            <line x1="30" y1="30" x2="170" y2="30" stroke="#FF6B6B" stroke-width="5"><animate attributeName="stroke-opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/></line>
+                            <line x1="170" y1="30" x2="170" y2="170" stroke="#4ECDC4" stroke-width="5"><animate attributeName="stroke-opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.3s"/></line>
+                            <line x1="170" y1="170" x2="30" y2="170" stroke="#FF8C42" stroke-width="5"><animate attributeName="stroke-opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.6s"/></line>
+                            <line x1="30" y1="170" x2="30" y2="30" stroke="#A06CD5" stroke-width="5"><animate attributeName="stroke-opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" begin="0.9s"/></line>
+                        </svg>
+                        <p style="color:#888;">Garis berwarna berkedip = sisi!</p>
+                    </div>
+                `
+            },
+            sudut: {
+                title: '📐 Sudut',
+                content: `
+                    <h2 style="font-family:'Fredoka One',cursive; color:var(--green);">📐 Sudut</h2>
+                    <p style="font-size:1.15em; line-height:1.8; margin:15px 0;">
+                        Sudut adalah <strong>daerah yang terbentuk di antara dua sisi</strong> yang bertemu di satu titik sudut. Sudut diukur dalam <strong>derajat (°)</strong>.
+                    </p>
+                    <div style="text-align:center;">
+                        <svg viewBox="0 0 200 150" width="200">
+                            <line x1="30" y1="120" x2="170" y2="120" stroke="#333" stroke-width="3"/>
+                            <line x1="30" y1="120" x2="100" y2="30" stroke="#333" stroke-width="3"/>
+                            <path d="M60,120 A30,30 0 0,1 52,100" fill="none" stroke="#95E06C" stroke-width="4"><animate attributeName="stroke" values="#95E06C;#FFE66D;#95E06C" dur="2s" repeatCount="indefinite"/></path>
+                            <text x="65" y="108" font-size="14" fill="#95E06C" font-weight="bold">sudut</text>
+                            <circle cx="30" cy="120" r="5" fill="#FF6B6B"/>
+                        </svg>
+                    </div>
+                `
+            },
+            diagonal: {
+                title: '✂️ Diagonal',
+                content: `
+                    <h2 style="font-family:'Fredoka One',cursive; color:var(--purple);">✂️ Diagonal</h2>
+                    <p style="font-size:1.15em; line-height:1.8; margin:15px 0;">
+                        Diagonal adalah <strong>garis yang menghubungkan dua titik sudut yang saling berhadapan</strong> (tidak bersebelahan).
+                    </p>
+                    <div style="text-align:center;">
+                        <svg viewBox="0 0 200 200" width="180">
+                            <rect x="30" y="30" width="140" height="140" fill="#F3E5F5" stroke="#9C27B0" stroke-width="2"/>
+                            <line x1="30" y1="30" x2="170" y2="170" stroke="#A06CD5" stroke-width="4" stroke-dasharray="8,4"><animate attributeName="stroke-dashoffset" values="0;24" dur="1s" repeatCount="indefinite"/></line>
+                            <line x1="170" y1="30" x2="30" y2="170" stroke="#FF6B9D" stroke-width="4" stroke-dasharray="8,4"><animate attributeName="stroke-dashoffset" values="0;24" dur="1s" repeatCount="indefinite"/></line>
+                            <circle cx="30" cy="30" r="5" fill="#333"/>
+                            <circle cx="170" cy="30" r="5" fill="#333"/>
+                            <circle cx="170" cy="170" r="5" fill="#333"/>
+                            <circle cx="30" cy="170" r="5" fill="#333"/>
+                        </svg>
+                        <p style="color:#888;">Garis putus-putus bergerak = diagonal!</p>
+                    </div>
+                    <div class="info-box warning">
+                        <h4>⚠️ Penting!</h4>
+                        <p>Segitiga TIDAK punya diagonal. Lingkaran juga TIDAK punya diagonal!</p>
+                    </div>
+                `
+            }
+        };
+
+        function showUnsurDetail(unsurName) {
+            const data = unsurDetails[unsurName];
+            const modal = document.getElementById('unsurModal');
+            document.getElementById('unsurModalBody').innerHTML = data.content;
+            modal.classList.add('show');
+        }
+
+        function closeUnsurModal() {
+            document.getElementById('unsurModal').classList.remove('show');
+        }
+
+        // Close modals on overlay click
+        document.getElementById('shapeModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+        document.getElementById('unsurModal').addEventListener('click', function(e) {
+            if (e.target === this) closeUnsurModal();
+        });
+
+        // ==================== INTERACTIVE EXPLORATION ====================
+        let currentExploreShape = 'persegi-e';
+
+        function selectExploreShape(shapeName) {
+            document.querySelectorAll('.shape-select-btn').forEach(b => b.classList.remove('selected'));
+            event.target.classList.add('selected');
+
+            document.querySelectorAll('.explore-shape').forEach(s => s.style.display = 'none');
+            document.getElementById('explore-' + shapeName).style.display = 'block';
+
+            currentExploreShape = shapeName;
+            highlightUnsur('reset');
+        }
+
+        function highlightUnsur(type) {
+            const svg = document.getElementById('explore-' + currentExploreShape);
+            const desc = document.getElementById('explore-description');
+
+            // Reset all
+            svg.querySelectorAll('.sisi').forEach(el => {
+                el.classList.remove('shape-highlight-sisi');
+                el.style.stroke = '';
+                el.style.strokeWidth = '';
+            });
+            svg.querySelectorAll('.titik-sudut').forEach(el => {
+                el.classList.remove('shape-highlight-titik');
+                el.style.fill = '#333';
+                el.style.r = '';
+            });
+            svg.querySelectorAll('.sudut-mark').forEach(el => {
+                el.style.stroke = 'transparent';
+                el.style.strokeWidth = '0';
+            });
+            svg.querySelectorAll('.diagonal').forEach(el => {
+                el.classList.remove('shape-highlight-diagonal');
+                el.style.stroke = 'transparent';
+                el.style.strokeWidth = '0';
+            });
+
+            const descriptions = {
+                titik: {
+                    html: `<h4>📍 Titik Sudut</h4><p>Titik-titik <strong style="color:var(--red);">merah besar</strong> yang berkedip adalah titik sudut! Di sinilah dua sisi bertemu.</p>`,
+                },
+                sisi: {
+                    html: `<h4>📏 Sisi</h4><p>Garis <strong style="color:var(--blue);">biru tebal</strong> yang berkedip adalah sisi-sisi bangun datar! Sisi adalah garis pembatas bangun.</p>`,
+                },
+                sudut: {
+                    html: `<h4>📐 Sudut</h4><p>Tanda <strong style="color:var(--green);">hijau</strong> di setiap pojok menunjukkan sudut. Sudut terbentuk dari pertemuan dua sisi.</p>`,
+                },
+                diagonal: {
+                    html: `<h4>✂️ Diagonal</h4><p>Garis <strong style="color:var(--purple);">ungu putus-putus</strong> adalah diagonal. Diagonal menghubungkan titik sudut yang berhadapan.</p>`,
+                },
+                reset: {
+                    html: `<h4>👆 Klik tombol di atas!</h4><p>Pilih unsur yang ingin kamu lihat pada bangun datar.</p>`,
+                }
+            };
+
+            switch(type) {
+                case 'titik':
+                    svg.querySelectorAll('.titik-sudut').forEach(el => {
+                        el.style.fill = '#FF6B6B';
+                        el.style.r = '12';
+                        el.classList.add('shape-highlight-titik');
+                    });
+                    break;
+                case 'sisi':
+                    svg.querySelectorAll('.sisi').forEach(el => {
+                        el.style.stroke = '#4ECDC4';
+                        el.style.strokeWidth = '6';
+                        el.classList.add('shape-highlight-sisi');
+                    });
+                    break;
+                case 'sudut':
+                    svg.querySelectorAll('.sudut-mark').forEach(el => {
+                        el.style.stroke = '#95E06C';
+                        el.style.strokeWidth = '3';
+                    });
+                    svg.querySelectorAll('.titik-sudut').forEach(el => {
+                        el.style.fill = '#95E06C';
+                        el.style.r = '8';
+                    });
+                    break;
+                case 'diagonal':
+                    svg.querySelectorAll('.diagonal').forEach(el => {
+                        el.style.stroke = '#A06CD5';
+                        el.style.strokeWidth = '3';
+                        el.style.strokeDasharray = '8 4';
+                        el.classList.add('shape-highlight-diagonal');
+                    });
+                    break;
+            }
+
+            desc.innerHTML = descriptions[type].html;
+            desc.className = 'info-box ' + (type === 'reset' ? '' : 'tip');
+        }
+
+        // ==================== QUIZ ====================
+        let quizInitialized = false;
+        let currentQuestion = 0;
+        let score = 0;
+        let answers = [];
+
+        const quizQuestions = [
+            {
+                q: "Berapa jumlah sisi pada persegi?",
+                options: ["3", "4", "5", "6"],
+                correct: 1,
+                explanation: "Persegi memiliki 4 sisi yang sama panjang! 🟩"
+            },
+            {
+                q: "Berapa jumlah titik sudut pada segitiga?",
+                options: ["2", "3", "4", "5"],
+                correct: 1,
+                explanation: "Segitiga memiliki 3 titik sudut! 🔺"
+            },
+            {
+                q: "Bangun datar mana yang TIDAK memiliki diagonal?",
+                options: ["Persegi", "Segitiga", "Persegi Panjang", "Belah Ketupat"],
+                correct: 1,
+                explanation: "Segitiga tidak memiliki diagonal karena semua titik sudutnya bersebelahan! 🔺"
+            },
+            {
+                q: "Berapa jumlah diagonal pada persegi panjang?",
+                options: ["0", "1", "2", "4"],
+                correct: 2,
+                explanation: "Persegi panjang memiliki 2 diagonal yang sama panjang! 🟦"
+            },
+            {
+                q: "Besar sudut pada persegi adalah...",
+                options: ["45°", "60°", "90°", "180°"],
+                correct: 2,
+                explanation: "Semua sudut persegi adalah sudut siku-siku (90°)! ✅"
+            },
+            {
+                q: "Lingkaran memiliki berapa titik sudut?",
+                options: ["0", "1", "2", "Tak terhingga"],
+                correct: 0,
+                explanation: "Lingkaran tidak memiliki titik sudut sama sekali! ⭕"
+            },
+            {
+                q: "Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut siku-siku adalah...",
+                options: ["Persegi Panjang", "Jajar Genjang", "Persegi", "Trapesium"],
+                correct: 2,
+                explanation: "Persegi memiliki 4 sisi sama panjang DAN 4 sudut siku-siku! 🟩"
+            },
+            {
+                q: "Trapesium memiliki berapa pasang sisi yang sejajar?",
+                options: ["0", "1", "2", "3"],
+                correct: 1,
+                explanation: "Trapesium memiliki tepat 1 pasang sisi yang sejajar! ⬡"
+            },
+            {
+                q: "Unsur bangun datar yang berupa garis lurus pembatas adalah...",
+                options: ["Titik Sudut", "Diagonal", "Sisi", "Sudut"],
+                correct: 2,
+                explanation: "Sisi adalah garis lurus yang membatasi bangun datar! 📏"
+            },
+            {
+                q: "Belah ketupat memiliki ciri diagonal yang...",
+                options: ["Sama panjang", "Saling tegak lurus", "Sejajar", "Tidak berpotongan"],
+                correct: 1,
+                explanation: "Diagonal belah ketupat saling tegak lurus (membentuk sudut 90°)! 🔷"
+            }
+        ];
+
+        function initQuiz() {
+            quizInitialized = true;
+            currentQuestion = 0;
+            score = 0;
+            answers = new Array(quizQuestions.length).fill(null);
+
+            const container = document.getElementById('quizContainer');
+            const progressContainer = document.getElementById('quizProgress');
+
+            // Build progress dots
+            progressContainer.innerHTML = quizQuestions.map((_, i) =>
+                `<div class="progress-dot" id="dot-${i}"></div>`
+            ).join('');
+
+            // Build questions
+            container.innerHTML = quizQuestions.map((q, i) => `
+                <div class="quiz-question ${i === 0 ? 'active' : ''}" id="question-${i}">
+                    <h3>Soal ${i + 1} dari ${quizQuestions.length}</h3>
+                    <div class="question-text">${q.q}</div>
+                    <div class="quiz-options">
+                        ${q.options.map((opt, j) => `
+                            <button class="quiz-option" onclick="answerQuiz(${i}, ${j})" id="opt-${i}-${j}">${opt}</button>
+                        `).join('')}
+                    </div>
+                    <div class="quiz-feedback" id="feedback-${i}"></div>
+                    <div class="quiz-nav">
+                        <button class="quiz-nav-btn btn-prev" onclick="navQuiz(${i - 1})" ${i === 0 ? 'disabled' : ''}>⬅️ Sebelumnya</button>
+                        <span style="font-family:'Fredoka One',cursive; color:#888;">${i + 1} / ${quizQuestions.length}</span>
+                        ${i < quizQuestions.length - 1
+                            ? `<button class="quiz-nav-btn btn-next" onclick="navQuiz(${i + 1})">Berikutnya ➡️</button>`
+                            : `<button class="quiz-nav-btn btn-next" onclick="showScore()" style="background:var(--green);">🏁 Lihat Skor</button>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('scoreDisplay').classList.remove('show');
+            updateProgressDots();
+        }
+
+        function answerQuiz(qIndex, optIndex) {
+            if (answers[qIndex] !== null) return;
+
+            const q = quizQuestions[qIndex];
+            const isCorrect = optIndex === q.correct;
+            answers[qIndex] = optIndex;
+
+            if (isCorrect) score++;
+
+            // Highlight options
+            document.getElementById(`opt-${qIndex}-${optIndex}`).classList.add(isCorrect ? 'correct' : 'wrong');
+            document.getElementById(`opt-${qIndex}-${q.correct}`).classList.add('correct');
+
+            // Show feedback
+            const feedback = document.getElementById(`feedback-${qIndex}`);
+            feedback.className = `quiz-feedback show ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`;
+            feedback.innerHTML = isCorrect
+                ? `🎉 Benar! ${q.explanation}`
+                : `😅 Kurang tepat! ${q.explanation}`;
+
+            // Disable all options
+            q.options.forEach((_, j) => {
+                document.getElementById(`opt-${qIndex}-${j}`).style.pointerEvents = 'none';
+            });
+
+            updateProgressDots();
+
+            if (isCorrect) {
+                showStars();
+            }
+        }
+
+        function navQuiz(index) {
+            if (index < 0 || index >= quizQuestions.length) return;
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+            document.getElementById(`question-${index}`).classList.add('active');
+            currentQuestion = index;
+            updateProgressDots();
+        }
+
+        function updateProgressDots() {
+            quizQuestions.forEach((q, i) => {
+                const dot = document.getElementById(`dot-${i}`);
+                dot.className = 'progress-dot';
+                if (i === currentQuestion) dot.classList.add('active');
+                if (answers[i] !== null) {
+                    dot.classList.add(answers[i] === q.correct ? 'answered-correct' : 'answered-wrong');
+                }
+            });
+        }
+
+        function showScore() {
+            document.querySelectorAll('.quiz-question').forEach(q => q.classList.remove('active'));
+            const display = document.getElementById('scoreDisplay');
+            display.classList.add('show');
+
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            document.getElementById('scoreNumber').textContent = percentage + '%';
+
+            let stars = '', message = '';
+            if (percentage >= 90) {
+                stars = '⭐⭐⭐⭐⭐';
+                message = '🏆 LUAR BIASA! Kamu Jenius! 🎉';
+            } else if (percentage >= 70) {
+                stars = '⭐⭐⭐⭐';
+                message = '👏 Hebat! Hampir Sempurna!';
+            } else if (percentage >= 50) {
+                stars = '⭐⭐⭐';
+                message = '😊 Bagus! Terus Belajar ya!';
+            } else if (percentage >= 30) {
+                stars = '⭐⭐';
+                message = '💪 Semangat! Coba Lagi ya!';
+            } else {
+                stars = '⭐';
+                message = '📖 Ayo Belajar Lagi!';
+            }
+
+            document.getElementById('scoreStars').textContent = stars;
+            document.getElementById('scoreMessage').textContent = message;
+
+            if (percentage >= 70) showConfetti();
+        }
+
+        function restartQuiz() {
+            quizInitialized = false;
+            initQuiz();
+        }
+
+        // ==================== CELEBRATIONS ====================
+        function showStars() {
+            const container = document.getElementById('starsContainer');
+            container.style.display = 'block';
+            const emojis = ['⭐', '🌟', '✨', '💫', '🎉', '🎊'];
+
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const star = document.createElement('div');
+                    star.className = 'star-particle';
+                    star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 30 + '%';
+                    star.style.animationDuration = (1 + Math.random() * 2) + 's';
+                    container.appendChild(star);
+
+                    setTimeout(() => star.remove(), 3000);
+                }, i * 80);
+            }
+
+            setTimeout(() => container.style.display = 'none', 3500);
+        }
+
+        function showConfetti() {
+            const container = document.getElementById('starsContainer');
+            container.style.display = 'block';
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A06CD5', '#FF8C42', '#95E06C', '#45B7D1', '#FF6B9D'];
+
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random() * 100 + '%';
+                    piece.style.top = '-10px';
+                    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    piece.style.width = (5 + Math.random() * 10) + 'px';
+                    piece.style.height = (5 + Math.random() * 10) + 'px';
+                    piece.style.animationDuration = (2 + Math.random() * 3) + 's';
+                    container.appendChild(piece);
+
+                    setTimeout(() => piece.remove(), 5000);
+                }, i * 50);
+            }
+
+            setTimeout(() => container.style.display = 'none', 6000);
+        }
+
+        // ==================== DRAG & DROP GAME ====================
+        let dragInitialized = false;
+
+        function initDragDrop() {
+            if (dragInitialized) return;
+            dragInitialized = true;
+
+            const items = document.querySelectorAll('.drag-item');
+            const zones = document.querySelectorAll('.drop-zone');
+
+            items.forEach(item => {
+                item.addEventListener('dragstart', e => {
+                    e.dataTransfer.setData('text/plain', item.id);
+                    item.classList.add('dragging');
+                });
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                });
+            });
+
+            zones.forEach(zone => {
+                zone.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    const itemId = e.dataTransfer.getData('text/plain');
+                    const item = document.getElementById(itemId);
+                    if (item) {
+                        const droppedDiv = zone.querySelector('.dropped-items');
+                        const clone = document.createElement('span');
+                        clone.className = 'dropped-item';
+                        clone.textContent = item.textContent;
+                        clone.dataset.answer = item.dataset.answer;
+                        clone.style.background = '#FFE66D';
+                        clone.style.padding = '6px 12px';
+                        clone.style.borderRadius = '8px';
+                        clone.style.cursor = 'pointer';
+                        clone.onclick = function() { this.remove(); };
+                        droppedDiv.appendChild(clone);
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        function checkDragDrop() {
+            let correct = 0;
+            let total = 0;
+            const zones = document.querySelectorAll('.drop-zone');
+
+            zones.forEach(zone => {
+                const accepts = zone.dataset.accepts.split(',');
+                const dropped = zone.querySelectorAll('.dropped-item');
+
+                dropped.forEach(item => {
+                    total++;
+                    if (accepts.includes(item.dataset.answer)) {
+                        item.classList.add('correct-drop');
+                        item.classList.remove('wrong-drop');
+                        correct++;
+                    } else {
+                        item.classList.add('wrong-drop');
+                        item.classList.remove('correct-drop');
+                    }
+                });
+            });
+
+            const feedback = document.getElementById('dragFeedback');
+            document.getElementById('dragScore').textContent = `Skor: ${correct} / ${total}`;
+
+            if (total === 0) {
+                feedback.className = 'quiz-feedback show feedback-wrong';
+                feedback.textContent = '😅 Seret beberapa item ke kotak dulu ya!';
+            } else if (correct === total) {
+                feedback.className = 'quiz-feedback show feedback-correct';
+                feedback.textContent = '🎉 SEMPURNA! Semua benar!';
+                showConfetti();
+            } else {
+                feedback.className = 'quiz-feedback show feedback-wrong';
+                feedback.textContent = `😊 ${correct} dari ${total} benar. Coba lagi! Yang merah salah posisi, klik untuk mengembalikan.`;
+            }
+        }
+
+        function resetDragDrop() {
+            document.querySelectorAll('.dropped-items').forEach(c => c.innerHTML = '');
+            document.querySelectorAll('.drag-item').forEach(i => i.style.display = '');
+            document.getElementById('dragFeedback').className = 'quiz-feedback';
+            document.getElementById('dragScore').textContent = 'Skor: 0';
+        }
+
+        // ==================== COUNTING GAME ====================
+        let countingInitialized = false;
+        let countingIndex = 0;
+        let countingCorrect = 0;
+        let countingTotal = 0;
+
+        const countingShapes = [
+            {
+                name: '🔺 Segitiga',
+                svg: '<polygon points="150,30 30,250 270,250" fill="#FF6B6B" stroke="#CC4444" stroke-width="3"/><circle cx="150" cy="30" r="5" fill="#FFE66D"/><circle cx="30" cy="250" r="5" fill="#FFE66D"/><circle cx="270" cy="250" r="5" fill="#FFE66D"/><text x="145" y="20" font-size="14" fill="#333" font-weight="bold">A</text><text x="12" y="270" font-size="14" fill="#333" font-weight="bold">B</text><text x="275" y="270" font-size="14" fill="#333" font-weight="bold">C</text>',
+                sisi: 3, titik: 3, sudut: 3, diagonal: 0
+            },
+            {
+                name: '🟩 Persegi',
+                svg: '<rect x="50" y="50" width="200" height="200" fill="#4ECDC4" stroke="#2AB7CA" stroke-width="3"/><circle cx="50" cy="50" r="5" fill="#FFE66D"/><circle cx="250" cy="50" r="5" fill="#FFE66D"/><circle cx="250" cy="250" r="5" fill="#FFE66D"/><circle cx="50" cy="250" r="5" fill="#FFE66D"/><text x="35" y="42" font-size="14" fill="#333" font-weight="bold">A</text><text x="255" y="42" font-size="14" fill="#333" font-weight="bold">B</text><text x="255" y="270" font-size="14" fill="#333" font-weight="bold">C</text><text x="35" y="270" font-size="14" fill="#333" font-weight="bold">D</text>',
+                sisi: 4, titik: 4, sudut: 4, diagonal: 2
+            },
+            {
+                name: '🔷 Belah Ketupat',
+                svg: '<polygon points="150,20 270,150 150,280 30,150" fill="#95E06C" stroke="#5CBD3A" stroke-width="3"/><circle cx="150" cy="20" r="5" fill="#FFE66D"/><circle cx="270" cy="150" r="5" fill="#FFE66D"/><circle cx="150" cy="280" r="5" fill="#FFE66D"/><circle cx="30" cy="150" r="5" fill="#FFE66D"/>',
+                sisi: 4, titik: 4, sudut: 4, diagonal: 2
+            },
+            {
+                name: '⬡ Trapesium',
+                svg: '<polygon points="90,50 210,50 270,250 30,250" fill="#45B7D1" stroke="#2A8FA8" stroke-width="3"/><circle cx="90" cy="50" r="5" fill="#FFE66D"/><circle cx="210" cy="50" r="5" fill="#FFE66D"/><circle cx="270" cy="250" r="5" fill="#FFE66D"/><circle cx="30" cy="250" r="5" fill="#FFE66D"/>',
+                sisi: 4, titik: 4, sudut: 4, diagonal: 2
+            },
+            {
+                name: '⭕ Lingkaran',
+                svg: '<circle cx="150" cy="150" r="100" fill="#FFE66D" stroke="#FFD700" stroke-width="3"/><circle cx="150" cy="150" r="4" fill="#FF6B6B"/><text x="142" y="145" font-size="14" fill="#333" font-weight="bold">O</text>',
+                sisi: 1, titik: 0, sudut: 0, diagonal: 0
+            }
+        ];
+
+        function initCounting() {
+            countingInitialized = true;
+            countingIndex = 0;
+            countingCorrect = 0;
+            countingTotal = 0;
+            loadCountingShape();
+        }
+
+        function loadCountingShape() {
+            if (countingIndex >= countingShapes.length) {
+                const feedback = document.getElementById('countingFeedback');
+                feedback.className = 'quiz-feedback show feedback-correct';
+                feedback.innerHTML = `🎉 Selesai! Skor akhir: ${countingCorrect} / ${countingTotal} benar!`;
+                if (countingCorrect === countingTotal) showConfetti();
+                return;
+            }
+
+            const shape = countingShapes[countingIndex];
+            document.getElementById('countingSvg').innerHTML = shape.svg;
+            document.getElementById('countingShapeName').textContent = shape.name;
+            document.getElementById('countingScore').textContent = `Soal: ${countingIndex + 1} / ${countingShapes.length}`;
+            document.getElementById('countingTotalScore').textContent = `Skor: ${countingCorrect} / ${countingTotal}`;
+
+            // Reset inputs
+            ['inputSisi', 'inputTitik', 'inputSudut', 'inputDiagonal'].forEach(id => {
+                const el = document.getElementById(id);
+                el.value = '';
+                el.className = '';
+            });
+
+            document.getElementById('countingFeedback').className = 'quiz-feedback';
+        }
+
+        function checkCounting() {
+            const shape = countingShapes[countingIndex];
+            const inputs = {
+                sisi: document.getElementById('inputSisi'),
+                titik: document.getElementById('inputTitik'),
+                sudut: document.getElementById('inputSudut'),
+                diagonal: document.getElementById('inputDiagonal')
+            };
+
+            let allCorrect = true;
+            let answered = 0;
+
+            Object.entries(inputs).forEach(([key, el]) => {
+                if (el.value === '') return;
+                answered++;
+                countingTotal++;
+                if (parseInt(el.value) === shape[key]) {
+                    el.className = 'input-correct';
+                    countingCorrect++;
+                } else {
+                    el.className = 'input-wrong';
+                    allCorrect = false;
+                }
+            });
+
+            if (answered === 0) {
+                const fb = document.getElementById('countingFeedback');
+                fb.className = 'quiz-feedback show feedback-wrong';
+                fb.textContent = '😅 Isi dulu jawabannya ya!';
+                return;
+            }
+
+            const feedback = document.getElementById('countingFeedback');
+            if (allCorrect && answered === 4) {
+                feedback.className = 'quiz-feedback show feedback-correct';
+                feedback.innerHTML = `🎉 Sempurna! ${shape.name} memiliki ${shape.sisi} sisi, ${shape.titik} titik sudut, ${shape.sudut} sudut, dan ${shape.diagonal} diagonal!`;
+                showStars();
+            } else if (allCorrect) {
+                feedback.className = 'quiz-feedback show feedback-correct';
+                feedback.textContent = '✅ Yang diisi sudah benar! Isi semua kolom untuk skor maksimal.';
+            } else {
+                feedback.className = 'quiz-feedback show feedback-wrong';
+                feedback.innerHTML = `😊 Ada yang kurang tepat! Jawaban benar: Sisi=${shape.sisi}, Titik Sudut=${shape.titik}, Sudut=${shape.sudut}, Diagonal=${shape.diagonal}`;
+            }
+
+            document.getElementById('countingTotalScore').textContent = `Skor: ${countingCorrect} / ${countingTotal}`;
+        }
+
+        function nextCounting() {
+            countingIndex++;
+            loadCountingShape();
+        }
+
+        function resetCounting() {
+            countingInitialized = false;
+            initCounting();
+        }
+
+        // ==================== INIT ====================
+        // Auto-init quiz progress on page load (deferred)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set first section active
+            document.getElementById('section-materi').classList.add('active');
+        });
+    </script>
+</body>
+</html>
